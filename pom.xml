@@ -226,4 +226,24 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+
+  <profiles>
+    <profile>
+      <id>include-fineo</id>
+      <repositories>
+        <repository>
+          <id>Fineo</id>
+          <url>http://maven.fineo.io/release</url>
+        </repository>
+      </repositories>
+      <dependencies>
+        <dependency>
+          <groupId>io.fineo.client</groupId>
+          <artifactId>jdbc</artifactId>
+          <version>1.0.0</version>
+        </dependency>
+      </dependencies>
+    </profile>
+
+  </profiles>
 </project>
