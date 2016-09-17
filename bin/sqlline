@@ -2,6 +2,7 @@
 # sqlline - Script to launch SQL shell on Unix, Linux or Mac OS
 
 BINPATH=$(dirname $0)
+OPTS=${SQL_LINE_SYS_OPTIONS:-"-Dsqlline.Isolation=TRANSACTION_NONE"}
 exec java -Djava.ext.dirs=$BINPATH sqlline.SqlLine "$@"
 
 # End sqlline
