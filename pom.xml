@@ -12,7 +12,7 @@
   <packaging>jar</packaging>
   <version>1.1.10-fineo-1.0-SNAPSHOT</version>
   <name>sqlline</name>
-  <url>http://github.com/julianhyde/sqlline</url>
+  <url>http://github.com/fineo-io/sqlline</url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -29,18 +29,13 @@
 
   <distributionManagement>
     <snapshotRepository>
-      <id>ossrh</id>
-      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+      <id>maven.fineo.snapshot</id>
+      <url>s3://maven.fineo.io/snapshot</url>
     </snapshotRepository>
     <repository>
-      <id>ossrh</id>
-      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+      <id>maven.fineo</id>
+      <url>s3://maven.fineo.io/release</url>
     </repository>
-    <site>
-      <id>sqlline.website</id>
-      <name>Sqlline Website</name>
-      <url>file:/home/jhyde/web2/sqlline</url>
-    </site>
   </distributionManagement>
 
   <issueManagement>
@@ -49,9 +44,9 @@
   </issueManagement>
 
   <scm>
-    <connection>scm:git:git://github.com/julianhyde/sqlline.git</connection>
-    <developerConnection>scm:git:git@github.com:julianhyde/sqlline.git</developerConnection>
-    <url>http://github.com/julianhyde/sqlline/tree/master</url>
+    <connection>scm:git:git://github.com/fineo-io/sqlline.git</connection>
+    <developerConnection>scm:git:git@github.com:fineo-io/sqlline.git</developerConnection>
+    <url>http://github.com/fineo-io/sqlline/tree/master</url>
     <tag>HEAD</tag>
   </scm>
 
@@ -72,6 +67,13 @@
   <repositories />
 
   <build>
+    <extensions>
+      <extension>
+        <groupId>org.kuali.maven.wagons</groupId>
+        <artifactId>maven-s3-wagon</artifactId>
+        <version>1.2.1</version>
+      </extension>
+    </extensions>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
