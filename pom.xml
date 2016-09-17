@@ -10,7 +10,7 @@
   <groupId>sqlline</groupId>
   <artifactId>sqlline</artifactId>
   <packaging>jar</packaging>
-  <version>1.1.10-fineo-1.0</version>
+  <version>1.1.10-fineo-1.1-SNAPSHOT</version>
   <name>sqlline</name>
   <url>http://github.com/fineo-io/sqlline</url>
 
