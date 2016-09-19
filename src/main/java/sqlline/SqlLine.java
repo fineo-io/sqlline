@@ -174,7 +174,8 @@ public class SqlLine {
           "com.internetcds.jdbc.tds.Driver",
           "weblogic.jdbc.pool.Driver",
           "com.sqlstream.jdbc.Driver",
-          "org.luciddb.jdbc.LucidDbClientDriver"));
+          "org.luciddb.jdbc.LucidDbClientDriver",
+          "io.fineo.read.Driver"));
 
   static {
     String testClass = "jline.console.ConsoleReader";
