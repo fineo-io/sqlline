@@ -16,7 +16,7 @@
   <files>
     <file>
       <source>target/${project.artifactId}-${project.version}-jar-with-dependencies.jar</source>
-      <outputDirectory>/</outputDirectory>
+      <outputDirectory>/lib</outputDirectory>
     </file>
   </files>
 </assembly>
