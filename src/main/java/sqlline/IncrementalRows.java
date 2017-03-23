@@ -21,9 +21,11 @@ import java.util.NoSuchElementException;
  */
 class IncrementalRows extends Rows {
   private final ResultSet rs;
-  private final Row labelRow;
-  private final Row maxRow;
+  private boolean firstRow;
+  private Row labelRow;
+  private Row maxRow;
   private Row nextRow;
+  private Row nextNextRow;
   private boolean endOfResult;
   private boolean normalizingWidths;
   private DispatchCallback dispatchCallback;
@@ -33,7 +35,12 @@ class IncrementalRows extends Rows {
     super(sqlLine, rs);
     this.rs = rs;
     this.dispatchCallback = dispatchCallback;
+    endOfResult = false;
+    computeMetadata();
+    firstRow = true;
+  }
 
+  private void computeMetadata() throws SQLException {
     labelRow = new Row(rsMeta.getColumnCount());
     maxRow = new Row(rsMeta.getColumnCount());
 
@@ -52,7 +59,6 @@ class IncrementalRows extends Rows {
     }
 
     nextRow = labelRow;
-    endOfResult = false;
   }
 
   public boolean hasNext() {
@@ -60,24 +66,92 @@ class IncrementalRows extends Rows {
       return false;
     }
 
-    if (nextRow == null) {
+    // check to see if we have more data and maybe need to compute a
+    // change in metadata right off the bat
+    if (firstRow) {
+      firstRow = false;
       try {
-        if (rs.next()) {
-          nextRow = new Row(labelRow.sizes.length, rs);
-
-          if (normalizingWidths) {
-            // perform incremental normalization
-            nextRow.sizes = labelRow.sizes;
-          }
-        } else {
+        // no next row, so just return the current label
+        if (!rs.next()) {
           endOfResult = true;
+          return true;
         }
+
+        // we have a next row, store that as the next-next row
+        // but first, check to see if we need to change the label
+        recomputeMeta();
+        this.nextNextRow = new Row(labelRow.sizes.length, rs);
+        return true;
       } catch (SQLException ex) {
         throw new WrappedSqlException(ex);
       }
     }
 
+    // its not the first row
+    if (nextRow != null) {
+      return true;
+    }
+
+    // we don't have a next row, try and get one
+    try {
+      if (!rs.next()) {
+        // no more data - we are done!
+        endOfResult = true;
+        return false;
+      }
+
+      // we have a next row. Maybe the metadata needs to be recomputed
+      if (recomputeMeta()) {
+        // we need a new label row and to push off the 'next' row off by one row
+        this.nextRow = this.labelRow;
+        this.nextNextRow = new Row(labelRow.sizes.length, rs);
+      } else {
+        // its just a normal row, so add it normally
+        nextRow = new Row(labelRow.sizes.length, rs);
+      }
+      if (normalizingWidths) {
+        normalize(nextRow);
+        normalize(nextNextRow);
+      }
+    } catch (SQLException e) {
+      throw new WrappedSqlException(e);
+    }
     return nextRow != null;
+  }
+//      try {
+//        if (rs.next()) {
+//          // check to see if the
+//
+//          nextRow = new Row(labelRow.sizes.length, rs);
+//
+//          if (normalizingWidths) {
+//            // perform incremental normalization
+//            nextRow.sizes = labelRow.sizes;
+//          }
+//        } else {
+//          endOfResult = true;
+//        }
+//      } catch (SQLException ex) {
+//        throw new WrappedSqlException(ex);
+//      }
+//    }
+//
+//    return nextRow != null;
+//  }
+
+  private void normalize(Row row) {
+    if (row != null) {
+      row.sizes = labelRow.sizes;
+    }
+  }
+
+  private boolean recomputeMeta() throws SQLException {
+    int count = rsMeta.getColumnCount();
+    if (count != this.labelRow.sizes.length) {
+      computeMetadata();
+      return true;
+    }
+    return false;
   }
 
   public Row next() {
@@ -86,7 +160,8 @@ class IncrementalRows extends Rows {
     }
 
     Row ret = nextRow;
-    nextRow = null;
+    nextRow = nextNextRow;
+    nextNextRow = null;
     return ret;
   }
 
