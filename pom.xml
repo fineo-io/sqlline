@@ -12,7 +12,7 @@
   <groupId>sqlline</groupId>
   <artifactId>sqlline</artifactId>
   <packaging>jar</packaging>
-  <version>1.1.10-fineo-1.3-SNAPSHOT</version>
+  <version>1.1.10-fineo-1.3</version>
   <name>sqlline</name>
   <url>http://github.com/fineo-io/sqlline</url>
 
@@ -238,8 +238,14 @@
         <dependency>
           <groupId>io.fineo.client</groupId>
           <artifactId>jdbc</artifactId>
-          <version>1.1.2</version>
+          <version>1.1.3-SNAPSHOT</version>
           <classifier>all</classifier>
+        </dependency>
+        <!-- use logback for fineo logs. Avoids an error message on startup -->
+        <dependency>
+          <groupId>ch.qos.logback</groupId>
+          <artifactId>logback-classic</artifactId>
+          <version>1.1.3</version>
         </dependency>
       </dependencies>
     </profile>
