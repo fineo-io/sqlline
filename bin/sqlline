@@ -1,7 +1,9 @@
 #!/bin/bash
 # sqlline - Script to launch SQL shell on Unix, Linux or Mac OS
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-DEBUG_OPTS=${DEBUG_OPTS:-"-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005"}
+
+DEBUG_PORT=${DEBUG_PORT:-5005}
+DEBUG_OPTS=${DEBUG_OPTS:-"-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=${DEBUG_PORT}"}
 if [ "x$DEBUG" != "x" ]; then
   DEBUG=$DEBUG_OPTS
 fi
