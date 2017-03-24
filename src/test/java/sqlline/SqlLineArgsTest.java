@@ -509,6 +509,27 @@ public class SqlLineArgsTest {
             containsString(line1)));
   }
 
+  @Test
+  @Ignore("HsqlDB does not support changing the row/column count")
+  public void testReprintHeaderOnNewMetadata() throws Throwable {
+    checkScriptFile(
+        "values (1, cast(null as integer)), (2, cast(null as integer), 2);\n",
+        false,
+        equalTo(SqlLine.Status.OK),
+        containsString(
+              "+-------------+-------------+\n"
+            + "|     C1      |     C2      |\n"
+            + "+-------------+-------------+\n"
+            + "| 1           | null        |\n"
+            + "+-------------+-------------+\n"
+            + "+-------------+-------------+-------------+\n"
+            + "|     C1      |     C2      |     C3      |\n"
+            + "+-------------+-------------+-------------+\n"
+            + "| 1           | null        | 2           |\n"
+            + "+-------------+-------------+-------------+\n"));
+  }
+
+
   /** Information necessary to create a JDBC connection. Specify one to run
    * tests against a different database. (hsqldb is the default.) */
   public static class ConnectionSpec {

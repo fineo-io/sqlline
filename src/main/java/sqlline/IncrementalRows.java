@@ -81,6 +81,9 @@ class IncrementalRows extends Rows {
         // but first, check to see if we need to change the label
         recomputeMeta();
         this.nextNextRow = new Row(labelRow.sizes.length, rs);
+        if (normalizingWidths) {
+          normalize(nextNextRow);
+        }
         return true;
       } catch (SQLException ex) {
         throw new WrappedSqlException(ex);
