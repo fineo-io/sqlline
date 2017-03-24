@@ -73,7 +73,6 @@ class IncrementalRows extends Rows {
       try {
         // no next row, so just return the current label
         if (!rs.next()) {
-          endOfResult = true;
           return true;
         }
 
