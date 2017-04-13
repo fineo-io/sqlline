@@ -91,6 +91,35 @@ cd sqlline
 mvn package
 ```
 
+## Releasing - Fineo
+
+Releases are done locally. Build with:
+
+```
+ $ mvn clean install deploy -Pwith-fineo -s <mvn deploy settings file>
+```
+
+Where you deploy settings file has the access keys for the Fineo s3 
+repositories, something like:
+
+```
+<servers>
+    <server>
+      <id>maven.fineo</id>
+      <username>AWS_ACCESS_KEY</username>
+      <password>AWS_SECRET_KEY</password>
+    </server>
+    <server>
+      <id>maven.fineo.snapshot</id>
+      <username>AWS_ACCESS_KEY</username>
+      <password>AWS_SECRET_KEY</password>
+    </server>
+  </servers>
+</settings>
+```
+
+
+
 ## Authors
 
 * Marc Prud'hommeaux (marc@apocalypse.org)
