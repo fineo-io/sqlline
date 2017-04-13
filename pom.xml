@@ -234,11 +234,17 @@
   <profiles>
     <profile>
       <id>with-fineo</id>
+      <repositories>
+        <repository>
+          <id>fineo-release</id>
+          <url>http://maven.fineo.io/release</url>
+        </repository>
+      </repositories>
       <dependencies>
         <dependency>
           <groupId>io.fineo.client</groupId>
           <artifactId>jdbc</artifactId>
-          <version>1.1.3-SNAPSHOT</version>
+          <version>1.1.3</version>
           <classifier>all</classifier>
         </dependency>
         <!-- use logback for fineo logs. Avoids an error message on startup -->
